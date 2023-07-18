@@ -35,7 +35,8 @@ def strategy(buy_amt, SL=0.985, Target=1.02, open_position=False):
         time.sleep(61)
         asset = top_coin()
         df = last_data(asset, '1m', '120')
-        
+
+
     qty = round(buy_amt/df.Close.iloc[-1] ,1)
     
     if ((df.Close.pct_change() + 1).cumprod()).iloc[-1] > 1:
