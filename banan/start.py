@@ -52,5 +52,19 @@ def last_data(symbol, interval, lookback):
     return [i.Open for i in frame.itertuples()], [i.Volume for i in frame.itertuples()]
 
 
+def btc_anal(data):
+    if round(sum(data[0][:-1])/28 / data[0][-1] - 1, 3) > 0.28:
+        chat_id = -695765690
+        bot = telebot.TeleBot(telega_token)
+        message = f"БИТОК РАСТЕТ НА {round(sum(data[0][:-1])/28 / data[0][-1] - 1, 3)}%"
+        bot.send_message(chat_id, message)
+
+    print(round((data[0][-1] / (sum(data[0][:-1])/len(data[0][:-1])))-1, 3))
+    print(data[0][-1], sum(data[0][:-1])/len(data[0][:-1]))
+    print(round(data[0][-1] / (sum(data[0][:-1])/len(data[0][:-1]))-1, 1))
+
+
+
 while True:
+    btc_anal(last_data('BTCUSDT', "5m", "150"))
     top_coin()
