@@ -21,11 +21,16 @@ def top_coin(btc_differ):
             if data_token[0][-1] > sum(data_token[0][80:-3])/len(data_token[0][80:-3]) \
                     and data_token[0][-3:] == sorted(data_token[0][-3:]) \
                     and sum(data_token[1][:-3])/len(data_token[1][:-3]) * 7 < sum(data_token[1][-3:-1])/2 \
-                    and 100-((sum(data_token[0][:-3])/len(data_token[0][:-3]))/data_token[0][-1])*100 > 2.4 \
+                    and data_token[0][-1] > sum(data_token[0][80:-3])/len(data_token[0][80:-3]) \
                     and btc_differ == True:
                 chat_id = -695765690
                 bot = telebot.TeleBot(telega_token)
-                message = "ALARM - " + i
+                message = f"ALARM - {i}\n" \
+                          f"{data_token[0][-3:], data_token[1][-3:]}\n" \
+                          f"РОСТ ЦЕНЫ НА {round(100-(data_token[0][-3]/data_token[0][-1])*100, 2)}%\n" \
+                          f"СРЕДНИЙ ОБЪЕМ ТОРГОВ - {int(sum(data_token[1][:-3])/len(data_token[1][:-3]))}\n" \
+                          f"СРЕДНЯЯ ЦЕНА ЗА ПРОШЛЫЕ 5 ЧАСОВ - {sum(data_token[0][80:-3])/len(data_token[0][80:-3])}\n" \
+                          f"https://www.binance.com/ru/trade/{i[:-4]}_USDT?_from=markets&theme=dark&type=grid"
                 bot.send_message(chat_id, message)
             if 100-(data_token[0][-3]/data_token[0][-1])*100 > 2.4 \
                     and data_token[0][-1] > sum(data_token[0][80:-3])/len(data_token[0][80:-3]) \
@@ -36,7 +41,8 @@ def top_coin(btc_differ):
                           f"{data_token[0][-3:], data_token[1][-3:]}\n" \
                           f"РОСТ ЦЕНЫ НА {round(100-(data_token[0][-3]/data_token[0][-1])*100, 2)}%\n" \
                           f"СРЕДНИЙ ОБЪЕМ ТОРГОВ - {int(sum(data_token[1][:-3])/len(data_token[1][:-3]))}\n" \
-                          f"СРЕДНЯЯ ЦЕНА ЗА ПРОШЛЫЕ 5 ЧАСОВ - {sum(data_token[0][80:-3])/len(data_token[0][80:-3])}"
+                          f"СРЕДНЯЯ ЦЕНА ЗА ПРОШЛЫЕ 5 ЧАСОВ - {sum(data_token[0][80:-3])/len(data_token[0][80:-3])}\n" \
+                          f"https://www.binance.com/ru/trade/{i[:-4]}_USDT?_from=markets&theme=dark&type=grid"
                 bot.send_message(chat_id, message)
         except:
             pass
