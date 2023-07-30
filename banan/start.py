@@ -17,32 +17,38 @@ def top_coin(btc_differ):
         try:
             #print(i)
             #print(last_data(i, "3m", "300"))
-            data_token = last_data(i, "3m", "300")
-            if data_token[0][-1] > sum(data_token[0][80:-3])/len(data_token[0][80:-3]) \
-                    and data_token[0][-3:] == sorted(data_token[0][-3:]) \
-                    and sum(data_token[1][:-3])/len(data_token[1][:-3]) * 7 < sum(data_token[1][-3:-1])/2 \
-                    and data_token[0][-1] > sum(data_token[0][80:-3])/len(data_token[0][80:-3]) \
+            data_token = last_data(i, "3m", "540")
+            #all_tickers = pd.DataFrame(client.get_ticker())
+            #price_change_percent = all_tickers[all_tickers["symbol"].str.contains(i)]["priceChangePercent"]
+            prices_token = data_token[0]
+            volumes_token = data_token[1]
+            price_change_in_9min = 100 - (prices_token[-3] / prices_token[-1]) * 100
+
+            if price_change_in_9min > 2.4 \
+                    and prices_token[-3:] == sorted(prices_token[-3:]) \
+                    and sum(volumes_token[:-3])/len(volumes_token[:-3]) * 9.5 < volumes_token[-2] \
+                    and prices_token[-1] > sum(prices_token[:-3])/len(prices_token[:-3]) \
                     and btc_differ == True:
+                    #and price_change_percent < 5:
                 chat_id = -695765690
                 bot = telebot.TeleBot(telega_token)
                 message = f"ALARM - {i}\n" \
-                          f"{data_token[0][-3:], data_token[1][-3:]}\n" \
-                          f"РОСТ ЦЕНЫ НА {round(100-(data_token[0][-3]/data_token[0][-1])*100, 2)}%\n" \
-                          f"СРЕДНИЙ ОБЪЕМ ТОРГОВ - {int(sum(data_token[1][:-3])/len(data_token[1][:-3]))}\n" \
-                          f"СРЕДНЯЯ ЦЕНА ЗА ПРОШЛЫЕ 5 ЧАСОВ - {sum(data_token[0][80:-3])/len(data_token[0][80:-3])}\n" \
+                          f"{prices_token[-3:], volumes_token[-3:]}\n" \
+                          f"РОСТ ЦЕНЫ НА {round(price_change_in_9min, 2)}%\n" \
+                          f"СРЕДНИЙ ОБЪЕМ ТОРГОВ - {int(sum(volumes_token[:-3])/len(volumes_token[:-3]))}\n" \
+                          f"СРЕДНЯЯ ЦЕНА ЗА ПРОШЛЫЕ 9 ЧАСОВ - {sum(prices_token[:-3])/len(prices_token[:-3])}\n" \
                           f"https://www.binance.com/ru/trade/{i[:-4]}_USDT?_from=markets&theme=dark&type=grid"
                 bot.send_message(chat_id, message)
-            if 100-(data_token[0][-3]/data_token[0][-1])*100 > 2.4 \
-                    and data_token[0][-1] > sum(data_token[0][80:-3])/len(data_token[0][80:-3]) \
+            if price_change_in_9min > 2.4 \
+                    and prices_token[-1] > sum(prices_token[80:-3])/len(prices_token[80:-3]) \
                     and btc_differ == True:
                 chat_id = -695765690
                 bot = telebot.TeleBot(telega_token)
                 message = f"PUMP {i}\n" \
-                          f"{data_token[0][-3:], data_token[1][-3:]}\n" \
-                          f"РОСТ ЦЕНЫ НА {round(100-(data_token[0][-3]/data_token[0][-1])*100, 2)}%\n" \
-                          f"СРЕДНИЙ ОБЪЕМ ТОРГОВ - {int(sum(data_token[1][:-3])/len(data_token[1][:-3]))}\n" \
-                          f"СРЕДНЯЯ ЦЕНА ЗА ПРОШЛЫЕ 5 ЧАСОВ - {sum(data_token[0][80:-3])/len(data_token[0][80:-3])}\n" \
-                          f"https://www.binance.com/ru/trade/{i[:-4]}_USDT?_from=markets&theme=dark&type=grid"
+                          f"{prices_token[-3:], volumes_token[-3:]}\n" \
+                          f"РОСТ ЦЕНЫ НА {round(100-(prices_token[-3]/prices_token[-1])*100, 2)}%\n" \
+                          f"СРЕДНИЙ ОБЪЕМ ТОРГОВ - {int(sum(volumes_token[:-3])/len(volumes_token[:-3]))}\n" \
+                          f"СРЕДНЯЯ ЦЕНА ЗА ПРОШЛЫЕ 9 ЧАСОВ - {sum(prices_token[:-3])/len(prices_token[:-3])}"
                 bot.send_message(chat_id, message)
         except:
             pass
