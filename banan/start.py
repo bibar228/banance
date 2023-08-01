@@ -17,19 +17,26 @@ def top_coin(btc_differ):
         try:
             #print(i)
             #print(last_data(i, "3m", "300"))
-            data_token = last_data(i, "3m", "540")
-            #all_tickers = pd.DataFrame(client.get_ticker())
-            #price_change_percent = all_tickers[all_tickers["symbol"].str.contains(i)]["priceChangePercent"]
-            prices_token = data_token[0]
-            volumes_token = data_token[1]
+            data_token = last_data(i, "3m", "1440")
+
+            prices_token = data_token[0][300:]
+            volumes_token = data_token[1][300:]
             price_change_in_9min = 100 - (prices_token[-3] / prices_token[-1]) * 100
+
+            price_change_percent_24h = (data_token[0][0] / data_token[0][-1]) * 100
+            if price_change_percent_24h > 100:
+                price_change_percent_24h = round(price_change_percent_24h - 100, 2)
+            elif price_change_percent_24h < 100:
+                price_change_percent_24h = round(100 - price_change_percent_24h, 2)
+            else:
+                price_change_percent_24h = 0
 
             if price_change_in_9min > 2.4 \
                     and prices_token[-3:] == sorted(prices_token[-3:]) \
                     and sum(volumes_token[:-3])/len(volumes_token[:-3]) * 9.5 < volumes_token[-2] \
                     and prices_token[-1] > sum(prices_token[:-3])/len(prices_token[:-3]) \
-                    and btc_differ == True:
-                    #and price_change_percent < 5:
+                    and btc_differ == True \
+                    and price_change_percent_24h < 5:
                 chat_id = -695765690
                 bot = telebot.TeleBot(telega_token)
                 message = f"ALARM - {i}\n" \
