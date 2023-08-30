@@ -62,48 +62,48 @@ def top_coin(btc_differ):
                     and btc_differ \
                     and price_change_percent_24h < 7:
 
-                telebot.TeleBot(telega_token).send_message(-695765690, "RABOTAEM")
+                telebot.TeleBot(telega_token).send_message(-695765690, f"RABOTAEM - {i}")
 
-                qty = round(11 / prices_token[-1], 1)
-                order_buy = client.create_order(symbol=i, side='BUY', type='MARKET', quantity=qty)
+                buy_qty = round(10 / prices_token[-1], 1)
+                order_buy = client.create_order(symbol=i, side='BUY', type='MARKET', quantity=buy_qty)
                 buyprice = float(order_buy["fills"][0]["price"])
-                try:
-                    order_sell = client.order_limit_sell(symbol=i, quantity=qty, price=(buyprice / 100) * 101)
-                except:
-                    time.sleep(30)
-                    telebot.TeleBot(telega_token).send_message(-695765690, "PIZDA OSHIBKA SELL")
-                    order_sell = client.order_limit_sell(symbol=i, quantity=qty, price=(buyprice / 100) * 101)
-
-                chat_id = -695765690
-                bot = telebot.TeleBot(telega_token)
-                message = f"ALARM - {i}\n" \
-                          f"{prices_token[-3:], volumes_token[-3:]}\n" \
-                          f"РОСТ ЦЕНЫ НА {round(price_change_in_9min, 2)}%\n" \
-                          f"СРЕДНИЙ ОБЪЕМ ТОРГОВ - {int(sum(volumes_token[:-3]) / len(volumes_token[:-3]))}\n" \
-                          f"СРЕДНЯЯ ЦЕНА ЗА ПРОШЛЫЕ 9 ЧАСОВ - {sum(prices_token[:-3]) / len(prices_token[:-3])}\n" \
-                          f"https://www.binance.com/ru/trade/{i[:-4]}_USDT?_from=markets&theme=dark&type=grid\n" \
-                          f"order_buy - {order_buy}\n" \
-                          f"order_sell - {order_sell}"
-                bot.send_message(chat_id, message)
-
+                all_orders = pd.DataFrame(client.get_all_orders(symbol=i), columns=["orderId", "type", "side", "price", "status"])
                 open_position = True
+                start_time = time.time()
+                balance = client.get_asset_balance(asset=i[:-4])
+                sell_qty = round(float(balance["free"]), 2)
                 while open_position:
-                    try:
-                        time.sleep(4000)
-                        data_token = last_data(i, "1m", "2")
-                    except:
-                        pass
-
-                    if data_token[0][-1] < buyprice:
+                    if len(all_orders.loc[all_orders["status"] == "NEW"]) > 0:
                         try:
-                            order_jopa = client.create_order(symbol=i, side='SELL', type='MARKET', quantity=qty)
-                            telebot.TeleBot(telega_token).send_message(-695765690, f"Продажа в минус, за {data_token[0][-1]}\n"
-                                                                                   f"Покупал за {buyprice}")
-                            break
-                        except:
-                            break
+                            order_sell = client.order_limit_sell(symbol=i, quantity=sell_qty, price=(buyprice / 100) * 101)
+                        except Exception as e:
+                            time.sleep(30)
+                            telebot.TeleBot(telega_token).send_message(-695765690, f"PIZDA OSHIBKA SELL: {e}")
+                            order_sell = client.order_limit_sell(symbol=i, quantity=sell_qty, price=(buyprice / 100) * 101)
                     else:
-                        break
+                        open_position = False
+
+                        chat_id = -695765690
+                        bot = telebot.TeleBot(telega_token)
+                        message = f"ALARM - {i}\n" \
+                                  f"{prices_token[-3:], volumes_token[-3:]}\n" \
+                                  f"РОСТ ЦЕНЫ НА {round(price_change_in_9min, 2)}%\n" \
+                                  f"СРЕДНИЙ ОБЪЕМ ТОРГОВ - {int(sum(volumes_token[:-3]) / len(volumes_token[:-3]))}\n" \
+                                  f"СРЕДНЯЯ ЦЕНА ЗА ПРОШЛЫЕ 9 ЧАСОВ - {sum(prices_token[:-3]) / len(prices_token[:-3])}\n" \
+                                  f"https://www.binance.com/ru/trade/{i[:-4]}_USDT?_from=markets&theme=dark&type=grid\n" \
+                                  f"order_buy - {order_buy}\n" \
+                                  f"order_sell - {order_sell}"
+                        bot.send_message(chat_id, message)
+
+                    last_time = time.time()
+                    if int(last_time-start_time) > 4000:
+                        data_token = last_data(i, "1m", "2")
+                        order_jopa = client.create_order(symbol=i, side='SELL', type='MARKET', quantity=sell_qty)
+                        telebot.TeleBot(telega_token).send_message(-695765690,
+                                                                   f"Продажа в минус, за {data_token[0][-1]}\n"
+                                                                   f"Покупал за {buyprice}")
+                    time.sleep(5)
+
 
                 trading_pairs.pop(trading_pairs.index(i))
 
