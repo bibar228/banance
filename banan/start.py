@@ -105,9 +105,11 @@ def top_coin(btc_differ):
                             telebot.TeleBot(telega_token).send_message(-695765690,
                                                                        f"Продажа в минус, за {data_token[0][-1]}\n"
                                                                        f"Покупал за {buyprice}")
+                            open_position = False
                         except:
                             telebot.TeleBot(telega_token).send_message(-695765690,
                                                                        "Ошибка продажи в минус, Нужен хелп!")
+                            break
                     time.sleep(5)
 
 
