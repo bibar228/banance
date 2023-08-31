@@ -64,7 +64,7 @@ def top_coin(btc_differ):
 
                 telebot.TeleBot(telega_token).send_message(-695765690, f"RABOTAEM - {i}")
 
-                buy_qty = round(10 / prices_token[-1], 1)
+                buy_qty = round(11 / prices_token[-1], 1)
                 order_buy = client.create_order(symbol=i, side='BUY', type='MARKET', quantity=buy_qty)
                 buyprice = float(order_buy["fills"][0]["price"])
                 all_orders = pd.DataFrame(client.get_all_orders(symbol=i), columns=["orderId", "type", "side", "price", "status"])
@@ -73,7 +73,7 @@ def top_coin(btc_differ):
                 balance = client.get_asset_balance(asset=i[:-4])
                 sell_qty = round(float(balance["free"]), 2)
                 while open_position:
-                    if len(all_orders.loc[all_orders["status"] == "NEW"]) > 0:
+                    if sell_qty > 0.5:
                         try:
                             order_sell = client.order_limit_sell(symbol=i, quantity=sell_qty, price=(buyprice / 100) * 101)
                         except Exception as e:
