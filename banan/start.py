@@ -76,13 +76,12 @@ def top_coin(btc_differ):
                 okr = "0." + "0" * len(x[1])
                 sell_qty = Decimal(sell_qty).quantize(Decimal(okr), ROUND_FLOOR)
                 while open_position:
-                    if sell_qty > 0.1:
+                    if float(sell_qty) > 0.1:
                         try:
                             order_sell = client.order_limit_sell(symbol=i, quantity=sell_qty, price=round((buyprice / 100) * 101, 2))
                         except Exception as e:
                             time.sleep(30)
                             telebot.TeleBot(telega_token).send_message(-695765690, f"PIZDA OSHIBKA SELL: {e}")
-                            order_sell = client.order_limit_sell(symbol=i, quantity=sell_qty, price=round((buyprice / 100) * 101))
                     else:
                         open_position = False
 
@@ -101,10 +100,14 @@ def top_coin(btc_differ):
                     last_time = time.time()
                     if int(last_time-start_time) > 4000:
                         data_token = last_data(i, "1m", "2")
-                        order_jopa = client.create_order(symbol=i, side='SELL', type='MARKET', quantity=sell_qty)
-                        telebot.TeleBot(telega_token).send_message(-695765690,
-                                                                   f"Продажа в минус, за {data_token[0][-1]}\n"
-                                                                   f"Покупал за {buyprice}")
+                        try:
+                            order_jopa = client.create_order(symbol=i, side='SELL', type='MARKET', quantity=sell_qty)
+                            telebot.TeleBot(telega_token).send_message(-695765690,
+                                                                       f"Продажа в минус, за {data_token[0][-1]}\n"
+                                                                       f"Покупал за {buyprice}")
+                        except:
+                            telebot.TeleBot(telega_token).send_message(-695765690,
+                                                                       "Ошибка продажи в минус, Нужен хелп!")
                     time.sleep(5)
 
 
