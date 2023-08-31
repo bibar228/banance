@@ -1,5 +1,5 @@
 import time
-
+from decimal import Decimal, ROUND_FLOOR
 from binance.client import Client
 import keys
 import pandas as pd
@@ -64,22 +64,25 @@ def top_coin(btc_differ):
 
                 telebot.TeleBot(telega_token).send_message(-695765690, f"RABOTAEM - {i}")
 
-                buy_qty = round(11 / prices_token[-1], 1)
+                buy_qty = round(11 / prices_token[-1], 2)
                 order_buy = client.create_order(symbol=i, side='BUY', type='MARKET', quantity=buy_qty)
                 buyprice = float(order_buy["fills"][0]["price"])
                 all_orders = pd.DataFrame(client.get_all_orders(symbol=i), columns=["orderId", "type", "side", "price", "status"])
                 open_position = True
                 start_time = time.time()
                 balance = client.get_asset_balance(asset=i[:-4])
-                sell_qty = round(float(balance["free"]), 2)
+                sell_qty = float(balance["free"])
+                x = str(buy_qty).split(".")
+                okr = "0." + "0" * len(x[1])
+                sell_qty = Decimal(sell_qty).quantize(Decimal(okr), ROUND_FLOOR)
                 while open_position:
-                    if sell_qty > 0.5:
+                    if sell_qty > 0.1:
                         try:
-                            order_sell = client.order_limit_sell(symbol=i, quantity=sell_qty, price=(buyprice / 100) * 101)
+                            order_sell = client.order_limit_sell(symbol=i, quantity=sell_qty, price=round((buyprice / 100) * 101, 2))
                         except Exception as e:
                             time.sleep(30)
                             telebot.TeleBot(telega_token).send_message(-695765690, f"PIZDA OSHIBKA SELL: {e}")
-                            order_sell = client.order_limit_sell(symbol=i, quantity=sell_qty, price=(buyprice / 100) * 101)
+                            order_sell = client.order_limit_sell(symbol=i, quantity=sell_qty, price=round((buyprice / 100) * 101))
                     else:
                         open_position = False
 
