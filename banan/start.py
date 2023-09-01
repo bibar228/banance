@@ -120,7 +120,6 @@ def top_coin(btc_differ):
                             break
                     time.sleep(5)
 
-
                 trading_pairs.pop(trading_pairs.index(i))
 
 
