@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type="text/css" href="{% static 'vision/css/styles.css' %}" rel="stylesheet" />
+</head>
+<body>
+    <ul>
+        {% for p in orders %}
+        <li>
+            <h2>{{p.name_cript}}</h2>
+            <p>{{p.side}} {{p.price}} {{p.count}} {{p.all_cost}}</p>
+            <p>{{p.price}}</p>
+            <p>{{p.count}}</p>
+            <p>{{p.all_cost}}</p>
+        </li>
+        {% endfor %}}
+    </ul>
+</body>
+</html>
