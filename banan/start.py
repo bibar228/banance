@@ -74,10 +74,8 @@ def top_coin(btc_differ):
                 open_position = True
                 start_time = time.time()
                 balance = client.get_asset_balance(asset=i[:-4])
-                sell_qty = float(balance["free"])
                 x = str(buy_qty).split(".")
                 okr = "0." + "0" * len(x[1])
-                sell_qty = Decimal(sell_qty).quantize(Decimal(okr), ROUND_FLOOR)
                 while open_position:
                     sell_qty = float(balance["free"])
                     sell_qty = Decimal(sell_qty).quantize(Decimal(okr), ROUND_FLOOR)
@@ -110,12 +108,10 @@ def top_coin(btc_differ):
                             ordId = order["orderId"]
                             client.cancel_order(symbol=i, orderId=ordId)
 
-                        data_token = last_data(i, "1m", "2")
-
                         try:
                             order_jopa = client.create_order(symbol=i, side='SELL', type='MARKET', quantity=sell_qty)
                             telebot.TeleBot(telega_token).send_message(-695765690,
-                                                                       f"Продажа в минус, за {data_token[0][-1]}\n"
+                                                                       f"Продажа в минус, за {order_jopa['price']}\n"
                                                                        f"Покупал за {buyprice}")
                             open_position = False
                         except:
