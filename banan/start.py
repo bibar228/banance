@@ -64,7 +64,7 @@ def top_coin(btc_differ):
 
                 telebot.TeleBot(telega_token).send_message(-695765690, f"RABOTAEM - {i}")
 
-                buy_qty = round(11 / prices_token[-1], 2)
+                buy_qty = round(11 / prices_token[-1], 1)
                 try:
                     order_buy = client.create_order(symbol=i, side='BUY', type='MARKET', quantity=buy_qty)
                 except Exception as e:
@@ -81,13 +81,13 @@ def top_coin(btc_differ):
                 while open_position:
                     sell_qty = float(balance["free"])
                     sell_qty = Decimal(sell_qty).quantize(Decimal(okr), ROUND_FLOOR)
-                    if float(sell_qty) > 0.1:
+                    if float(sell_qty) > 0.1 and len(all_orders[all_orders.isin(["NEW"]).any(axis=1)]) == 0:
                         try:
-                            order_sell = client.order_limit_sell(symbol=i, quantity=sell_qty, price=round((buyprice / 100) * 101, 2))
+                            order_sell = client.order_limit_sell(symbol=i, quantity=sell_qty, price=round((buyprice / 100) * 101, len(str(prices_token[-1]).split(".")[1])))
                         except Exception as e:
                             time.sleep(30)
                             telebot.TeleBot(telega_token).send_message(-695765690, f"PIZDA OSHIBKA SELL: {e}")
-                    else:
+                    elif float(sell_qty) < 0.1 and len(all_orders[all_orders.isin(["NEW"]).any(axis=1)]) == 0:
                         open_position = False
 
                         chat_id = -695765690
@@ -98,13 +98,20 @@ def top_coin(btc_differ):
                                   f"СРЕДНИЙ ОБЪЕМ ТОРГОВ - {int(sum(volumes_token[:-3]) / len(volumes_token[:-3]))}\n" \
                                   f"СРЕДНЯЯ ЦЕНА ЗА ПРОШЛЫЕ 9 ЧАСОВ - {sum(prices_token[:-3]) / len(prices_token[:-3])}\n" \
                                   f"https://www.binance.com/ru/trade/{i[:-4]}_USDT?_from=markets&theme=dark&type=grid\n" \
-                                  f"order_buy - {order_buy}\n" \
-                                  f"order_sell - {order_sell}"
+                                  f"order_buy - {order_buy['price']}\n" \
+                                  f"order_sell - {order_sell['price']}"
                         bot.send_message(chat_id, message)
 
                     last_time = time.time()
                     if int(last_time-start_time) > 4000:
+
+                        orders = client.get_open_orders(symbol=i)
+                        for order in orders:
+                            ordId = order["orderId"]
+                            client.cancel_order(symbol=i, orderId=ordId)
+
                         data_token = last_data(i, "1m", "2")
+
                         try:
                             order_jopa = client.create_order(symbol=i, side='SELL', type='MARKET', quantity=sell_qty)
                             telebot.TeleBot(telega_token).send_message(-695765690,
