@@ -62,13 +62,17 @@ def top_coin(btc_differ):
                     and btc_differ \
                     and price_change_percent_24h < 7:
 
-                telebot.TeleBot(telega_token).send_message(-695765690, f"RABOTAEM - {i}")
+
 
                 buy_qty = round(11 / prices_token[-1], 1)
+
+                telebot.TeleBot(telega_token).send_message(-695765690, f"RABOTAEM - {i}\n"
+                                                                       f"{buy_qty}, {prices_token[-1]}, {price_change_in_9min}")
                 try:
                     order_buy = client.create_order(symbol=i, side='BUY', type='MARKET', quantity=buy_qty)
                 except Exception as e:
-                    telebot.TeleBot(telega_token).send_message(-695765690, f"PIZDA OSHIBKA BUY: {e}")
+                    telebot.TeleBot(telega_token).send_message(-695765690, f"PIZDA OSHIBKA BUY: {e}\n"
+                                                                           f"{buy_qty}, {prices_token[-1]}")
                 buyprice = float(order_buy["fills"][0]["price"])
                 all_orders = pd.DataFrame(client.get_all_orders(symbol=i), columns=["orderId", "type", "side", "price", "status"])
                 open_position = True
