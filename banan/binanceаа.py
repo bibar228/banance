@@ -1,4 +1,4 @@
-from binance.client import Client
+from binanceаа.client import Client
 import keys
 import pandas as pd
 import time

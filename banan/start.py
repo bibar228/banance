@@ -73,6 +73,8 @@ def top_coin(btc_differ):
                 except Exception as e:
                     telebot.TeleBot(telega_token).send_message(-695765690, f"PIZDA OSHIBKA BUY: {e}\n"
                                                                            f"{buy_qty}, {prices_token[-1]}")
+                    break
+
                 buyprice = float(order_buy["fills"][0]["price"])
                 all_orders = pd.DataFrame(client.get_all_orders(symbol=i), columns=["orderId", "type", "side", "price", "status"])
                 open_position = True
@@ -88,7 +90,8 @@ def top_coin(btc_differ):
                             order_sell = client.order_limit_sell(symbol=i, quantity=sell_qty, price=round((buyprice / 100) * 101, len(str(prices_token[-1]).split(".")[1])))
                         except Exception as e:
                             time.sleep(30)
-                            telebot.TeleBot(telega_token).send_message(-695765690, f"PIZDA OSHIBKA SELL: {e}")
+                            telebot.TeleBot(telega_token).send_message(-695765690, f"PIZDA OSHIBKA SELL: {e}\n"
+                                                                                   f"{sell_qty}, {round((buyprice / 100) * 101, len(str(prices_token[-1]).split('.')[1]))}")
                     elif float(sell_qty) < 0.1 and len(all_orders[all_orders.isin(["NEW"]).any(axis=1)]) == 0:
                         open_position = False
 
