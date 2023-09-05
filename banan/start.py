@@ -64,7 +64,7 @@ def top_coin(btc_differ):
 
 
 
-                buy_qty = round(11 / prices_token[-1], 1)
+                buy_qty = int(round(11 / prices_token[-1], 1))
 
                 telebot.TeleBot(telega_token).send_message(-695765690, f"RABOTAEM - {i}\n"
                                                                        f"Количество покупаемого - {buy_qty}, Цена - {prices_token[-1]}, Изменение цены за 9 мин - {price_change_in_9min}")
@@ -72,7 +72,7 @@ def top_coin(btc_differ):
                     order_buy = client.create_order(symbol=i, side='BUY', type='MARKET', quantity=buy_qty)
                 except Exception as e:
                     telebot.TeleBot(telega_token).send_message(-695765690, f"PIZDA OSHIBKA BUY: {e}\n"
-                                                                           f"{buy_qty}, {prices_token[-1]}")
+                                                                           f"Количество покупаемого - {buy_qty}, Цена - {prices_token[-1]}")
                     break
 
                 buyprice = float(order_buy["fills"][0]["price"])
@@ -87,7 +87,7 @@ def top_coin(btc_differ):
                     sell_qty = Decimal(sell_qty).quantize(Decimal(okr), ROUND_FLOOR)
                     if float(sell_qty) > 0.1 and len(all_orders[all_orders.isin(["NEW"]).any(axis=1)]) == 0:
                         try:
-                            order_sell = client.order_limit_sell(symbol=i, quantity=sell_qty, price=round((buyprice / 100) * 101, len(str(prices_token[-1]).split(".")[1])))
+                            order_sell = client.order_limit_sell(symbol=i, quantity=sell_qty, price=int(round((buyprice / 100) * 101, len(str(prices_token[-1]).split(".")[1]))))
                         except Exception as e:
                             time.sleep(30)
                             telebot.TeleBot(telega_token).send_message(-695765690, f"PIZDA OSHIBKA SELL: {e}\n"
