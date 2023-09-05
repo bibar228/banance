@@ -1,6 +1,8 @@
 import time
 from decimal import Decimal, ROUND_FLOOR
 from binance.client import Client
+from binance.exceptions import BinanceAPIException
+
 import keys
 import pandas as pd
 import telebot
@@ -35,10 +37,22 @@ trading_pairs = ['BCHUSDT', 'XRPUSDT', 'EOSUSDT', 'LTCUSDT', 'TRXUSDT', 'ETCUSDT
                  'MAVUSDT', 'MDTUSDT', 'XVGUSDT', "OAXUSDT", "BIFIUSDT", "MULTIUSDT", "PROSUSDT", "VGXUSDT"]
 
 
-buy_qty = round(11 / 0.609, 1)
-print(buy_qty)
-#order_buy = client.create_order(symbol="LITUSDT", side='BUY', type='MARKET', quantity=buy_qty)
-
+#buy_qty = round(11 / 0.609, 1)
+#print(buy_qty)
+# buy_qty = round(11 / 0.0903, 1)
+# print(buy_qty)
+# try:
+#     order_buy = client.create_order(symbol="AERGOUSDT", side='BUY', type='MARKET', quantity=buy_qty)
+# except BinanceAPIException as e:
+#     if e.message == "Filter failure: LOT_SIZE":
+#         print("jopa")
+#         buy_qty = int(round(11 / 0.0903, 1))
+#         print(buy_qty)
+#         order_buy = client.create_order(symbol="AERGOUSDT", side='BUY', type='MARKET', quantity=buy_qty)
+sell_qty = 4.6
+okr = "0"
+d = Decimal(sell_qty).quantize(Decimal(okr), ROUND_FLOOR)
+print(d)
 #order_sell = client.order_limit_sell(symbol="LITUSDT", quantity=18.1, price=0.609)
 
-print(int(round(80.4, 0)))
+
