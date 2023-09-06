@@ -2,13 +2,11 @@ import time
 import pymysql
 from binance.client import Client
 import telebot
-
-api_key = "rxe9zm8PLaF4MT1ZshEcVC0559883oH8LCVTbjOhY5U8TXoDbsbnNfhVBQDZ37xf"
-api_secret = "f41uNN5J8TIeL4lWYCM3n9n4do4e5I1T8YQ5JNiheljyyiKLLAFpEqMSwC3Tsoa3"
+import keys
 
 telega_token = "5926919919:AAFCHFocMt_pdnlAgDo-13wLe4h_tHO0-GE"
 
-client = Client(api_key, api_secret)
+client = Client(keys.api_key, keys.api_secret)
 #i = "SNXUSDT"
 
 def sql_req(i):
