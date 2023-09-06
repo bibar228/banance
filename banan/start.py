@@ -5,6 +5,7 @@ from binance.exceptions import BinanceAPIException
 import keys
 import pandas as pd
 import telebot
+from sql_request import sql_req
 
 telega_token = "5926919919:AAFCHFocMt_pdnlAgDo-13wLe4h_tHO0-GE"
 
@@ -13,7 +14,7 @@ client = Client(keys.api_key, keys.api_secret)
 # futures_exchange_info = client.futures_exchange_info()
 # trading_pairs = [info['symbol'] for info in futures_exchange_info['symbols'] if info['symbol'][-4:] == "USDT"]
 trading_pairs = ['BCHUSDT', 'XRPUSDT', 'EOSUSDT', 'LTCUSDT', 'TRXUSDT', 'ETCUSDT', 'LINKUSDT', 'XLMUSDT', 'ADAUSDT',
-                 'XMRUSDT', 'DASHUSDT', 'ZECUSDT', 'XTZUSDT', 'BNBUSDT', 'ATOMUSDT', 'ONTUSDT', 'IOTAUSDT', 'BATUSDT',
+                 'XMRUSDT', 'DASHUSDT', 'ZECUSDT', 'XTZUSDT', 'ATOMUSDT', 'ONTUSDT', 'IOTAUSDT', 'BATUSDT',
                  'VETUSDT', 'NEOUSDT', 'QTUMUSDT', 'IOSTUSDT', 'THETAUSDT', 'ALGOUSDT', 'ZILUSDT', 'KNCUSDT', 'ZRXUSDT',
                  'COMPUSDT', 'OMGUSDT', 'DOGEUSDT', 'SXPUSDT', 'KAVAUSDT', 'BANDUSDT', 'RLCUSDT', 'WAVESUSDT',
                  'MKRUSDT', 'SNXUSDT', 'DOTUSDT', 'DEFIUSDT', 'YFIUSDT', 'BALUSDT', 'CRVUSDT', 'TRBUSDT', 'RUNEUSDT',
@@ -24,8 +25,8 @@ trading_pairs = ['BCHUSDT', 'XRPUSDT', 'EOSUSDT', 'LTCUSDT', 'TRXUSDT', 'ETCUSDT
                  'ANKRUSDT', 'BTSUSDT', 'LITUSDT', 'UNFIUSDT', 'REEFUSDT', 'RVNUSDT', 'SFPUSDT', 'XEMUSDT', 'BTCSTUSDT',
                  'COTIUSDT', 'CHRUSDT', 'MANAUSDT', 'ALICEUSDT', 'HBARUSDT', 'ONEUSDT', 'LINAUSDT', 'STMXUSDT',
                  'DENTUSDT', 'CELRUSDT', 'HOTUSDT', 'MTLUSDT', 'OGNUSDT', 'NKNUSDT', 'SCUSDT', 'DGBUSDT',
-                 '1000SHIBUSDT', 'BAKEUSDT', 'GTCUSDT', 'BTCDOMUSDT', 'IOTXUSDT', 'AUDIOUSDT', 'RAYUSDT', 'C98USDT',
-                 'MASKUSDT', 'ATAUSDT', 'DYDXUSDT', '1000XECUSDT', 'GALAUSDT', 'CELOUSDT', 'ARUSDT', 'KLAYUSDT',
+                 'BAKEUSDT', 'GTCUSDT', 'BTCDOMUSDT', 'IOTXUSDT', 'AUDIOUSDT', 'RAYUSDT', 'C98USDT',
+                 'MASKUSDT', 'ATAUSDT', 'DYDXUSDT', 'GALAUSDT', 'CELOUSDT', 'ARUSDT', 'KLAYUSDT',
                  'ARPAUSDT', 'CTSIUSDT', 'LPTUSDT', 'ENSUSDT', 'PEOPLEUSDT', 'ANTUSDT', 'ROSEUSDT', 'DUSKUSDT',
                  'FLOWUSDT', 'IMXUSDT', 'API3USDT', 'GMTUSDT', 'APEUSDT', 'WOOUSDT', 'FTTUSDT', 'JASMYUSDT', 'DARUSDT',
                  'GALUSDT', 'OPUSDT', 'INJUSDT', 'STGUSDT', 'FOOTBALLUSDT', 'SPELLUSDT', 'LDOUSDT', 'CVXUSDT',
@@ -34,7 +35,7 @@ trading_pairs = ['BCHUSDT', 'XRPUSDT', 'EOSUSDT', 'LTCUSDT', 'TRXUSDT', 'ETCUSDT
                  'COCOSUSDT', 'BNXUSDT', 'ACHUSDT', 'SSVUSDT', 'CKBUSDT', 'PERPUSDT', 'TRUUSDT', 'LQTYUSDT', 'USDCUSDT',
                  'IDUSDT', 'ARBUSDT', 'JOEUSDT', 'TLMUSDT', 'AMBUSDT', 'LEVERUSDT', 'RDNTUSDT', 'HFTUSDT', 'XVSUSDT',
                  'BLURUSDT', 'EDUUSDT', 'IDEXUSDT', 'SUIUSDT', 'UMAUSDT', 'RADUSDT', 'KEYUSDT', 'COMBOUSDT', 'NMRUSDT',
-                 'MAVUSDT', 'MDTUSDT', 'XVGUSDT', "OAXUSDT", "BIFIUSDT", "MULTIUSDT", "PROSUSDT", "VGXUSDT"]
+                 'MAVUSDT', 'MDTUSDT', 'XVGUSDT', "OAXUSDT", "BIFIUSDT", "MULTIUSDT", "PROSUSDT", "VGXUSDT", "COSUSDT", "DEGOUSDT", "FORTHUSDT"]
 
 ex = []
 
@@ -74,11 +75,13 @@ def top_coin(btc_differ):
                                                                            f"Количество покупаемого - {buy_qty}, Цена - {prices_token[-1]}, Изменение цены за 9 мин - {price_change_in_5min}")
                     try:
                         order_buy = client.create_order(symbol=i, side='BUY', type='MARKET', quantity=buy_qty)
+                        sql_req(i)
                         ex.append(i)
                     except BinanceAPIException as e:
                         if e.message == "Filter failure: LOT_SIZE":
                             buy_qty = int(round(11 / prices_token[-1], 1))
                             order_buy = client.create_order(symbol=i, side='BUY', type='MARKET', quantity=buy_qty)
+                            sql_req(i)
                             ex.append(i)
                         else:
                             telebot.TeleBot(telega_token).send_message(-695765690, f"PIZDA OSHIBKA BUY: {e.message}\n"
@@ -107,6 +110,7 @@ def top_coin(btc_differ):
                         if sell_qty > 0.05 and len(all_orders[all_orders.isin(["NEW"]).any(axis=1)]) == 0 and int(last_time-start_time) < 6300:
                             try:
                                 order_sell = client.order_limit_sell(symbol=i, quantity=sell_qty, price=round((buyprice / 100) * 101, len(str(prices_token[-1]).split(".")[1])))
+                                sql_req(i)
                             except Exception as e:
                                 time.sleep(30)
                                 telebot.TeleBot(telega_token).send_message(-695765690, f"PIZDA OSHIBKA SELL: {e}\n"
@@ -139,6 +143,7 @@ def top_coin(btc_differ):
 
                             try:
                                 order_jopa = client.create_order(symbol=i, side='SELL', type='MARKET', quantity=sell_qty)
+                                sql_req(i)
                                 telebot.TeleBot(telega_token).send_message(-695765690,
                                                                            f"Продажа в минус, за {order_jopa['price']}\n"
                                                                            f"Покупал за {buyprice}")
