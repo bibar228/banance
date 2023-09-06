@@ -1,13 +1,13 @@
 import time
-from decimal import Decimal, ROUND_FLOOR
+#from decimal import Decimal, ROUND_FLOOR
 from binance.client import Client
 from binance.exceptions import BinanceAPIException
-
 import keys
 import pandas as pd
 import telebot
 
 telega_token = "5926919919:AAFCHFocMt_pdnlAgDo-13wLe4h_tHO0-GE"
+
 
 client = Client(keys.api_key, keys.api_secret)
 # futures_exchange_info = client.futures_exchange_info()
@@ -45,10 +45,12 @@ def top_coin(btc_differ):
                 # print(i)
                 # print(last_data(i, "3m", "300"))
                 data_token = last_data(i, "3m", "1440")
+                data_token_price = last_data(i, "1m", "1440")
 
-                prices_token = data_token[0][300:]
+
+                prices_token = data_token_price[0][300:]
                 volumes_token = data_token[1][300:]
-                price_change_in_9min = 100 - (prices_token[-3] / prices_token[-1]) * 100
+                price_change_in_5min = 100 - (prices_token[-5] / prices_token[-1]) * 100
 
                 price_change_percent_24h = 100 - ((data_token[0][0] / data_token[0][-7]) * 100)
 
@@ -59,17 +61,17 @@ def top_coin(btc_differ):
                 # else:
                 #     price_change_percent_24h = 0
                 print(i)
-                if price_change_in_9min > 2.7 \
+                if price_change_in_5min > 2.4 \
                         and prices_token[-3:] == sorted(prices_token[-3:]) \
-                        and sum(volumes_token[:-3]) / len(volumes_token[:-3]) * 9.5 < volumes_token[-2] \
-                        and prices_token[-1] > sum(prices_token[:-3]) / len(prices_token[:-3]) \
+                        and sum(volumes_token[:-5]) / len(volumes_token[:-5]) * 9.5 < volumes_token[-2] \
+                        and prices_token[-1] > sum(prices_token[:-5]) / len(prices_token[:-5]) \
                         and btc_differ \
                         and price_change_percent_24h < 7:
 
                     buy_qty = round(11 / prices_token[-1], 1)
 
                     telebot.TeleBot(telega_token).send_message(-695765690, f"RABOTAEM - {i}\n"
-                                                                           f"Количество покупаемого - {buy_qty}, Цена - {prices_token[-1]}, Изменение цены за 9 мин - {price_change_in_9min}")
+                                                                           f"Количество покупаемого - {buy_qty}, Цена - {prices_token[-1]}, Изменение цены за 9 мин - {price_change_in_5min}")
                     try:
                         order_buy = client.create_order(symbol=i, side='BUY', type='MARKET', quantity=buy_qty)
                         ex.append(i)
@@ -84,24 +86,25 @@ def top_coin(btc_differ):
                             break
                     try:
                         buyprice = float(order_buy["fills"][0]["price"])
-                        all_orders = pd.DataFrame(client.get_all_orders(symbol=i), columns=["orderId", "type", "side", "price", "status"])
                         open_position = True
                         start_time = time.time()
                         balance = client.get_asset_balance(asset=i[:-4])
-                        if "." in str(buy_qty):
-                            x = str(buy_qty).split(".")
-                            okr = "0." + "0" * len(x[1])
-                        else:
-                            okr = "0"
+                        # if "." in str(buy_qty):
+                        #     x = str(buy_qty).split(".")
+                        #     okr = "0." + "0" * len(x[1])
+                        # else:
+                        #     okr = "0"
                     except Exception as e:
                         telebot.TeleBot(telega_token).send_message(-695765690, f"PIZDA OSHIBKA: {e}\n")
                         break
 
                     while open_position:
+                        all_orders = pd.DataFrame(client.get_all_orders(symbol=i),
+                                                  columns=["orderId", "type", "side", "price", "status"])
                         sell_qty = float(balance["free"])
-                        sell_qty = Decimal(sell_qty).quantize(Decimal(okr), ROUND_FLOOR)
+                        #sell_qty = Decimal(sell_qty).quantize(Decimal(okr), ROUND_FLOOR)
                         last_time = time.time()
-                        if sell_qty > 0.05 and len(all_orders[all_orders.isin(["NEW"]).any(axis=1)]) == 0 and int(last_time-start_time) < 4000:
+                        if sell_qty > 0.05 and len(all_orders[all_orders.isin(["NEW"]).any(axis=1)]) == 0 and int(last_time-start_time) < 6300:
                             try:
                                 order_sell = client.order_limit_sell(symbol=i, quantity=sell_qty, price=round((buyprice / 100) * 101, len(str(prices_token[-1]).split(".")[1])))
                             except Exception as e:
@@ -110,15 +113,15 @@ def top_coin(btc_differ):
                                                                                        f"Количество продаваемого - {sell_qty}, Цена - {round((buyprice / 100) * 101, len(str(prices_token[-1]).split('.')[1]))}\n"
                                                                                        f"Монеты в кошельке - {float(sell_qty)}, Количество открытых ордеров - {len(all_orders[all_orders.isin(['NEW']).any(axis=1)])}")
                         sell_qty = float(balance["free"])
-                        sell_qty = Decimal(sell_qty).quantize(Decimal(okr), ROUND_FLOOR)
-                        if float(sell_qty) < 0.05 and len(all_orders[all_orders.isin(["NEW"]).any(axis=1)]) == 0 and int(last_time-start_time) < 4000:
+                        #sell_qty = Decimal(sell_qty).quantize(Decimal(okr), ROUND_FLOOR)
+                        if float(sell_qty) < 0.05 and len(all_orders[all_orders.isin(["NEW"]).any(axis=1)]) == 0 and int(last_time-start_time) < 6300:
                             open_position = False
 
                             chat_id = -695765690
                             bot = telebot.TeleBot(telega_token)
                             message = f"ALARM - {i}\n" \
                                       f"{prices_token[-3:], volumes_token[-3:]}\n" \
-                                      f"РОСТ ЦЕНЫ НА {round(price_change_in_9min, 2)}%\n" \
+                                      f"РОСТ ЦЕНЫ НА {round(price_change_in_5min, 2)}%\n" \
                                       f"СРЕДНИЙ ОБЪЕМ ТОРГОВ - {int(sum(volumes_token[:-3]) / len(volumes_token[:-3]))}\n" \
                                       f"СРЕДНЯЯ ЦЕНА ЗА ПРОШЛЫЕ 9 ЧАСОВ - {sum(prices_token[:-3]) / len(prices_token[:-3])}\n" \
                                       f"https://www.binance.com/ru/trade/{i[:-4]}_USDT?_from=markets&theme=dark&type=grid\n" \
@@ -127,7 +130,7 @@ def top_coin(btc_differ):
                             bot.send_message(chat_id, message)
 
 
-                        if int(last_time-start_time) > 4000:
+                        if int(last_time-start_time) > 6300:
 
                             orders = client.get_open_orders(symbol=i)
                             for order in orders:
