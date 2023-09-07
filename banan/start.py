@@ -68,8 +68,6 @@ def top_coin(btc_differ):
 
                     buy_qty = round(11 / prices_token[-1], 1)
 
-                    telebot.TeleBot(telega_token).send_message(-695765690, f"RABOTAEM - {i}\n"
-                                                                           f"Количество покупаемого - {buy_qty}, Цена - {prices_token[-1]}, Изменение цены за 9 мин - {price_change_in_5min}")
                     try:
                         order_buy = client.create_order(symbol=i, side='BUY', type='MARKET', quantity=buy_qty)
                         ex.append(i)
@@ -82,6 +80,9 @@ def top_coin(btc_differ):
                             telebot.TeleBot(telega_token).send_message(-695765690, f"BUY ERROR: {e.message}\n"
                                                                                f"Количество покупаемого - {buy_qty}, Цена - {prices_token[-1]}")
                             break
+
+                    telebot.TeleBot(telega_token).send_message(-695765690, f"RABOTAEM - {i}\n"
+                                                                           f"Количество покупаемого - {buy_qty}, Цена - {prices_token[-1]}, Изменение цены за 9 мин - {round(price_change_in_5min, 2)}%")
                     try:
                         buyprice = float(order_buy["fills"][0]["price"])
                         open_position = True
@@ -95,7 +96,6 @@ def top_coin(btc_differ):
                         telebot.TeleBot(telega_token).send_message(-695765690, f"ERROR: {e}\n")
                         break
 
-                    sql_req(i)
 
                     while open_position:
                         all_orders = pd.DataFrame(client.get_all_orders(symbol=i),
@@ -121,13 +121,12 @@ def top_coin(btc_differ):
                             chat_id = -695765690
                             bot = telebot.TeleBot(telega_token)
                             message = f"ALARM - {i}\n" \
-                                      f"{prices_token[-3:], volumes_token[-3:]}\n" \
+                                      f"{prices_token[-3:]}\n" \
                                       f"РОСТ ЦЕНЫ НА {round(price_change_in_5min, 2)}%\n" \
-                                      f"СРЕДНИЙ ОБЪЕМ ТОРГОВ - {int(sum(volumes_token[:-3]) / len(volumes_token[:-3]))}\n" \
-                                      f"СРЕДНЯЯ ЦЕНА ЗА ПРОШЛЫЕ 9 ЧАСОВ - {sum(prices_token[:-3]) / len(prices_token[:-3])}\n" \
-                                      f"https://www.binance.com/ru/trade/{i[:-4]}_USDT?_from=markets&theme=dark&type=grid\n" \
                                       f"order_buy - {order_buy['price']}\n" \
-                                      f"order_sell - {order_sell['price']}"
+                                      f"order_sell - {order_sell['price']}\n" \
+                                      f"\n" \
+                                      f"https://www.binance.com/ru/trade/{i[:-4]}_USDT?_from=markets&theme=dark&type=grid"
                             bot.send_message(chat_id, message)
 
 
@@ -140,7 +139,6 @@ def top_coin(btc_differ):
 
                             try:
                                 order_sell = client.create_order(symbol=i, side='SELL', type='MARKET', quantity=sell_qty)
-                                sql_req(i)
                                 telebot.TeleBot(telega_token).send_message(-695765690,
                                                                            f"Продажа в минус, за {order_sell['price']}\n"
                                                                            f"Покупал за {buyprice}")
