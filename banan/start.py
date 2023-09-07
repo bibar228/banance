@@ -80,7 +80,7 @@ def top_coin(btc_differ):
                             order_buy = client.create_order(symbol=i, side='BUY', type='MARKET', quantity=buy_qty)
                             ex.append(i)
                         else:
-                            telebot.TeleBot(telega_token).send_message(-695765690, f"PIZDA OSHIBKA BUY: {e.message}\n"
+                            telebot.TeleBot(telega_token).send_message(-695765690, f"BUY ERROR: {e.message}\n"
                                                                                f"Количество покупаемого - {buy_qty}, Цена - {prices_token[-1]}")
                             break
                     try:
@@ -93,7 +93,7 @@ def top_coin(btc_differ):
                         # else:
                         #     okr = "0"
                     except Exception as e:
-                        telebot.TeleBot(telega_token).send_message(-695765690, f"PIZDA OSHIBKA: {e}\n")
+                        telebot.TeleBot(telega_token).send_message(-695765690, f"ERROR: {e}\n")
                         break
 
                     sql_req(i)
@@ -111,7 +111,7 @@ def top_coin(btc_differ):
                                 sql_req(i)
                             except Exception as e:
                                 time.sleep(30)
-                                telebot.TeleBot(telega_token).send_message(-695765690, f"PIZDA OSHIBKA SELL: {e}\n"
+                                telebot.TeleBot(telega_token).send_message(-695765690, f"SELL ERROR: {e}\n"
                                                                                        f"Количество продаваемого - {sell_qty}, Цена - {round((buyprice / 100) * 101, len(str(prices_token[-1]).split('.')[1]))}\n"
                                                                                        f"Монеты в кошельке - {float(sell_qty)}, Количество открытых ордеров - {len(all_orders[all_orders.isin(['NEW']).any(axis=1)])}")
                         sell_qty = float(balance["free"])
@@ -140,10 +140,10 @@ def top_coin(btc_differ):
                                 client.cancel_order(symbol=i, orderId=ordId)
 
                             try:
-                                order_jopa = client.create_order(symbol=i, side='SELL', type='MARKET', quantity=sell_qty)
+                                order_sell = client.create_order(symbol=i, side='SELL', type='MARKET', quantity=sell_qty)
                                 sql_req(i)
                                 telebot.TeleBot(telega_token).send_message(-695765690,
-                                                                           f"Продажа в минус, за {order_jopa['price']}\n"
+                                                                           f"Продажа в минус, за {order_sell['price']}\n"
                                                                            f"Покупал за {buyprice}")
                                 open_position = False
                             except:

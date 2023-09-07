@@ -11,4 +11,5 @@ telega_token = "5926919919:AAFCHFocMt_pdnlAgDo-13wLe4h_tHO0-GE"
 
 client = Client(keys.api_key, keys.api_secret)
 
-sql_req("NMRUSDT")
+depth = client.get_order_book(symbol='TRBUSDT')
+print(depth)
