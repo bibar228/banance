@@ -50,7 +50,7 @@ def top_coin(btc_differ):
                 volumes_token = data_token[1][300:]
                 price_change_in_5min = 100 - (prices_token[-5] / prices_token[-1]) * 100
 
-                price_change_percent_24h = 100 - ((data_token[0][0] / data_token[0][-7]) * 100)
+                price_change_percent_10h = 100 - ((data_token[0][200] / data_token[0][-7]) * 100)
 
                 # if price_change_percent_24h > 100:
                 #     price_change_percent_24h = round(price_change_percent_24h - 100, 2)
@@ -64,7 +64,7 @@ def top_coin(btc_differ):
                         and sum(volumes_token[:-5]) / len(volumes_token[:-5]) * 9.5 < volumes_token[-2] \
                         and prices_token[-1] > sum(prices_token[:-5]) / len(prices_token[:-5]) \
                         and btc_differ \
-                        and price_change_percent_24h < 7:
+                        and price_change_percent_10h < 7:
 
                     buy_qty = round(11 / prices_token[-1], 1)
 
