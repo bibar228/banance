@@ -23,17 +23,45 @@ trading_pairs = ['BCHUSDT', 'XRPUSDT', 'EOSUSDT', 'LTCUSDT', 'TRXUSDT', 'ETCUSDT
                  'CVCUSDT', 'BELUSDT', 'CTKUSDT', 'AXSUSDT', 'ALPHAUSDT', 'ZENUSDT', 'SKLUSDT', 'GRTUSDT', '1INCHUSDT',
                  'CHZUSDT', 'SANDUSDT', 'ANKRUSDT', 'BTSUSDT', 'LITUSDT', 'UNFIUSDT', 'REEFUSDT', 'RVNUSDT', 'SFPUSDT',
                  'XEMUSDT', 'COTIUSDT', 'CHRUSDT', 'MANAUSDT', 'ALICEUSDT', 'HBARUSDT', 'ONEUSDT', 'LINAUSDT', 'STMXUSDT',
-                 'DENTUSDT', 'CELRUSDT', 'HOTUSDT', 'MTLUSDT', 'OGNUSDT', 'NKNUSDT', 'SCUSDT', 'DGBUSDT', 'BAKEUSDT', 'GTCUSDT',
-                 'IOTXUSDT', 'AUDIOUSDT', 'RAYUSDT', 'C98USDT', 'MASKUSDT', 'ATAUSDT', 'DYDXUSDT', 'GALAUSDT', 'CELOUSDT',
-                 'ARUSDT', 'KLAYUSDT', 'ARPAUSDT', 'CTSIUSDT', 'LPTUSDT', 'ENSUSDT', 'PEOPLEUSDT', 'ANTUSDT', 'ROSEUSDT',
-                 'DUSKUSDT', 'FLOWUSDT', 'IMXUSDT', 'API3USDT', 'GMTUSDT', 'APEUSDT', 'WOOUSDT', 'JASMYUSDT', 'DARUSDT',
-                 'GALUSDT', 'OPUSDT', 'INJUSDT', 'STGUSDT', 'SPELLUSDT', 'LDOUSDT', 'CVXUSDT', 'ICPUSDT', 'APTUSDT', 'QNTUSDT',
-                 'FETUSDT', 'FXSUSDT', 'HOOKUSDT', 'MAGICUSDT', 'RNDRUSDT', 'HIGHUSDT', 'MINAUSDT', 'ASTRUSDT', 'AGIXUSDT',
-                 'PHBUSDT', 'GMXUSDT', 'CFXUSDT', 'STXUSDT', 'BNXUSDT', 'ACHUSDT', 'SSVUSDT', 'CKBUSDT', 'PERPUSDT', 'TRUUSDT',
-                 'LQTYUSDT', 'USDCUSDT', 'IDUSDT', 'ARBUSDT', 'JOEUSDT', 'TLMUSDT', 'AMBUSDT', 'LEVERUSDT', 'RDNTUSDT', 'HFTUSDT',
-                 'XVSUSDT', 'EDUUSDT', 'IDEXUSDT', 'SUIUSDT', 'UMAUSDT', 'RADUSDT', 'KEYUSDT', 'COMBOUSDT', 'NMRUSDT', 'MAVUSDT',
-                 'MDTUSDT', 'XVGUSDT', 'OAXUSDT', 'BIFIUSDT', 'MULTIUSDT', 'PROSUSDT', 'VGXUSDT', 'COSUSDT', 'DEGOUSDT', 'FORTHUSDT',
-                 'FLUXUSDT', "QUICKUSDT", "REIUSDT"]
+                 'DENTUSDT', 'CELRUSDT', 'HOTUSDT', 'MTLUSDT', 'OGNUSDT', 'NKNUSDT', 'SCUSDT', 'DGBUSDT', 'BAKEUSDT',
+                 'GTCUSDT', 'IOTXUSDT', 'AUDIOUSDT', 'RAYUSDT', 'C98USDT', 'MASKUSDT', 'ATAUSDT', 'DYDXUSDT', 'GALAUSDT',
+                 'CELOUSDT', 'ARUSDT', 'KLAYUSDT', 'ARPAUSDT', 'CTSIUSDT', 'LPTUSDT', 'ENSUSDT', 'PEOPLEUSDT', 'ANTUSDT',
+                 'ROSEUSDT', 'DUSKUSDT', 'FLOWUSDT', 'IMXUSDT', 'API3USDT', 'GMTUSDT', 'APEUSDT', 'WOOUSDT', 'JASMYUSDT',
+                 'DARUSDT', 'GALUSDT', 'OPUSDT', 'INJUSDT', 'STGUSDT', 'SPELLUSDT', 'LDOUSDT', 'CVXUSDT', 'ICPUSDT', 'APTUSDT',
+                 'QNTUSDT', 'FETUSDT', 'FXSUSDT', 'HOOKUSDT', 'MAGICUSDT', 'RNDRUSDT', 'HIGHUSDT', 'MINAUSDT', 'ASTRUSDT',
+                 'AGIXUSDT', 'PHBUSDT', 'GMXUSDT', 'CFXUSDT', 'STXUSDT', 'BNXUSDT', 'ACHUSDT', 'SSVUSDT', 'CKBUSDT', 'PERPUSDT',
+                 'TRUUSDT', 'LQTYUSDT', 'USDCUSDT', 'IDUSDT', 'ARBUSDT', 'JOEUSDT', 'TLMUSDT', 'AMBUSDT', 'LEVERUSDT', 'RDNTUSDT',
+                 'HFTUSDT', 'XVSUSDT', 'EDUUSDT', 'IDEXUSDT', 'SUIUSDT', 'UMAUSDT', 'RADUSDT', 'KEYUSDT', 'COMBOUSDT', 'NMRUSDT',
+                 'MAVUSDT', 'MDTUSDT', 'XVGUSDT', 'OAXUSDT', 'BIFIUSDT', 'MULTIUSDT', 'PROSUSDT', 'VGXUSDT', 'COSUSDT', 'DEGOUSDT',
+                 'FORTHUSDT', 'FLUXUSDT', 'QUICKUSDT', 'REIUSDT', 'WANUSDT', 'BCCUSDT', 'TUSDUSDT', 'VENUSDT', 'NULSUSDT', 'PAXUSDT',
+                 'BCHABCUSDT', 'BCHSVUSDT', 'BTTUSDT', 'USDSUSDT', 'ONGUSDT', 'NANOUSDT', 'MITHUSDT', 'TFUELUSDT', 'USDSBUSDT',
+                 'GTOUSDT', 'ERDUSDT', 'WINUSDT', 'NPXSUSDT', 'COCOSUSDT', 'PERLUSDT', 'MFTUSDT', 'STORMUSDT', 'DOCKUSDT', 'FUNUSDT',
+                 'BUSDUSDT', 'BEAMUSDT', 'HCUSDT', 'MCOUSDT', 'CTXCUSDT', 'TROYUSDT', 'VITEUSDT', 'FTTUSDT', 'EURUSDT', 'DREPUSDT',
+                 'BULLUSDT', 'BEARUSDT', 'ETHBULLUSDT', 'ETHBEARUSDT', 'TCTUSDT', 'WRXUSDT', 'LSKUSDT', 'BNTUSDT', 'LTOUSDT',
+                 'EOSBULLUSDT', 'EOSBEARUSDT', 'XRPBULLUSDT', 'XRPBEARUSDT', 'STRATUSDT', 'AIONUSDT', 'MBLUSDT', 'BNBBULLUSDT',
+                 'BNBBEARUSDT', 'STPTUSDT', 'WTCUSDT', 'DATAUSDT', 'XZCUSDT', 'HIVEUSDT', 'BTCUPUSDT', 'BTCDOWNUSDT', 'GXSUSDT',
+                 'ARDRUSDT', 'LENDUSDT', 'REPUSDT', 'PNTUSDT', 'BKRWUSDT', 'ETHUPUSDT', 'ETHDOWNUSDT', 'ADAUPUSDT', 'ADADOWNUSDT',
+                 'LINKUPUSDT', 'LINKDOWNUSDT', 'VTHOUSDT', 'GBPUSDT', 'DAIUSDT', 'DCRUSDT', 'BNBUPUSDT', 'BNBDOWNUSDT', 'XTZUPUSDT',
+                 'XTZDOWNUSDT', 'AUDUSDT', 'IRISUSDT', 'KMDUSDT', 'JSTUSDT', 'SRMUSDT', 'LUNAUSDT', 'PAXGUSDT', 'WNXMUSDT', 'BZRXUSDT',
+                 'YFIIUSDT', 'DIAUSDT', 'FIOUSDT', 'EOSUPUSDT', 'EOSDOWNUSDT', 'TRXUPUSDT', 'TRXDOWNUSDT', 'XRPUPUSDT', 'XRPDOWNUSDT',
+                 'DOTUPUSDT', 'DOTDOWNUSDT', 'WINGUSDT', 'LTCUPUSDT', 'LTCDOWNUSDT', 'NBSUSDT', 'OXTUSDT', 'SUNUSDT', 'HNTUSDT',
+                 'UNIUPUSDT', 'UNIDOWNUSDT', 'ORNUSDT', 'UTKUSDT', 'SXPUPUSDT', 'SXPDOWNUSDT', 'FILUPUSDT', 'FILDOWNUSDT', 'YFIUPUSDT',
+                 'YFIDOWNUSDT', 'BCHUPUSDT', 'BCHDOWNUSDT', 'AKROUSDT', 'HARDUSDT', 'DNTUSDT', 'STRAXUSDT', 'AVAUSDT', 'AAVEUPUSDT',
+                 'AAVEDOWNUSDT', 'SUSDUSDT', 'SUSHIUPUSDT', 'SUSHIDOWNUSDT', 'XLMUPUSDT', 'XLMDOWNUSDT', 'JUVUSDT', 'PSGUSDT', 'OGUSDT',
+                 'ATMUSDT', 'ASRUSDT', 'RIFUSDT', 'BTCSTUSDT', 'TWTUSDT', 'FIROUSDT', 'DODOUSDT', 'CAKEUSDT', 'ACMUSDT', 'BADGERUSDT',
+                 'FISUSDT', 'OMUSDT', 'PONDUSDT', 'RAMPUSDT', 'SUPERUSDT', 'EPSUSDT', 'AUTOUSDT', 'TKOUSDT', 'PUNDIXUSDT', '1INCHUPUSDT',
+                 '1INCHDOWNUSDT', 'BTGUSDT', 'MIRUSDT', 'BARUSDT', 'BURGERUSDT', 'SLPUSDT', 'SHIBUSDT', 'POLSUSDT', 'MDXUSDT', 'NUUSDT',
+                 'TORNUSDT', 'KEEPUSDT', 'ERNUSDT', 'PHAUSDT', 'BONDUSDT', 'MLNUSDT', 'DEXEUSDT', 'CLVUSDT', 'TVKUSDT', 'FARMUSDT',
+                 'ALPACAUSDT', 'MBOXUSDT', 'FORUSDT', 'REQUSDT', 'GHSTUSDT', 'WAXPUSDT', 'TRIBEUSDT', 'GNOUSDT', 'XECUSDT', 'ELFUSDT',
+                 'POLYUSDT', 'VIDTUSDT', 'USDPUSDT', 'ILVUSDT', 'YGGUSDT', 'SYSUSDT', 'DFUSDT', 'FIDAUSDT', 'FRONTUSDT', 'CVPUSDT',
+                 'AGLDUSDT', 'BETAUSDT', 'RAREUSDT', 'LAZIOUSDT', 'CHESSUSDT', 'ADXUSDT', 'AUCTIONUSDT', 'RGTUSDT', 'MOVRUSDT', 'CITYUSDT',
+                 'KP3RUSDT', 'QIUSDT', 'PORTOUSDT', 'POWRUSDT', 'AMPUSDT', 'PLAUSDT', 'PYRUSDT', 'ALCXUSDT', 'SANTOSUSDT', 'MCUSDT',
+                 'ANYUSDT', 'BICOUSDT', 'VOXELUSDT', 'OOKIUSDT', 'USTUSDT', 'GLMRUSDT', 'LOKAUSDT', 'SCRTUSDT', 'BTTCUSDT', 'ACAUSDT',
+                 'ANCUSDT', 'XNOUSDT', 'ALPINEUSDT', 'TUSDT', 'KDAUSDT', 'BSWUSDT', 'STEEMUSDT', 'MOBUSDT', 'NEXOUSDT', 'EPXUSDT',
+                 'LUNCUSDT', 'NEBLUSDT', 'POLYXUSDT', 'OSMOUSDT', 'HIFIUSDT', 'RPLUSDT', 'GNSUSDT', 'SYNUSDT', 'VIBUSDT', 'BETHUSDT',
+                 'USTCUSDT', 'GASUSDT', 'GLMUSDT', 'PROMUSDT', 'QKCUSDT', 'UFTUSDT', 'LOOMUSDT', 'WBTCUSDT', 'AERGOUSDT', 'PEPEUSDT',
+                 'FLOKIUSDT', 'ASTUSDT', 'SNTUSDT', 'PENDLEUSDT', 'ARKMUSDT', 'WBETHUSDT', 'WLDUSDT', 'FDUSDUSDT', 'SEIUSDT', 'CYBERUSDT']
+
 ex = []
 
 def top_coin(btc_differ):
@@ -120,11 +148,9 @@ def top_coin(btc_differ):
 
                             chat_id = -695765690
                             bot = telebot.TeleBot(telega_token)
-                            message = f"ALARM - {i}\n" \
+                            message = f"СДЕЛКА ЗАВЕРШЕНА - {i}\n" \
                                       f"{prices_token[-3:]}\n" \
-                                      f"РОСТ ЦЕНЫ НА {round(price_change_in_5min, 2)}%\n" \
-                                      f"order_buy - {order_buy['price']}\n" \
-                                      f"order_sell - {order_sell['price']}\n" \
+                                      f"ЗАСЕК НА РОСТЕ ЦЕНЫ В{round(price_change_in_5min, 2)}%\n" \
                                       f"\n" \
                                       f"https://www.binance.com/ru/trade/{i[:-4]}_USDT?_from=markets&theme=dark&type=grid"
                             bot.send_message(chat_id, message)
@@ -150,9 +176,6 @@ def top_coin(btc_differ):
 
                         time.sleep(5)
                     sql_req(i)
-
-
-
 
             # if price_change_in_9min > 2.7 \
             #         and prices_token[-1] > sum(prices_token[80:-3])/len(prices_token[80:-3]) \
