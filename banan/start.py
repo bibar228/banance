@@ -73,13 +73,11 @@ def top_coin(btc_differ):
                                                                            f"Количество покупаемого - {buy_qty}, Цена - {prices_token[-1]}, Изменение цены за 9 мин - {price_change_in_5min}")
                     try:
                         order_buy = client.create_order(symbol=i, side='BUY', type='MARKET', quantity=buy_qty)
-                        sql_req(i)
                         ex.append(i)
                     except BinanceAPIException as e:
                         if e.message == "Filter failure: LOT_SIZE":
                             buy_qty = int(round(11 / prices_token[-1], 1))
                             order_buy = client.create_order(symbol=i, side='BUY', type='MARKET', quantity=buy_qty)
-                            sql_req(i)
                             ex.append(i)
                         else:
                             telebot.TeleBot(telega_token).send_message(-695765690, f"PIZDA OSHIBKA BUY: {e.message}\n"
@@ -89,7 +87,6 @@ def top_coin(btc_differ):
                         buyprice = float(order_buy["fills"][0]["price"])
                         open_position = True
                         start_time = time.time()
-                        balance = client.get_asset_balance(asset=i[:-4])
                         # if "." in str(buy_qty):
                         #     x = str(buy_qty).split(".")
                         #     okr = "0." + "0" * len(x[1])
@@ -99,9 +96,12 @@ def top_coin(btc_differ):
                         telebot.TeleBot(telega_token).send_message(-695765690, f"PIZDA OSHIBKA: {e}\n")
                         break
 
+                    sql_req(i)
+
                     while open_position:
                         all_orders = pd.DataFrame(client.get_all_orders(symbol=i),
                                                   columns=["orderId", "type", "side", "price", "status"])
+                        balance = client.get_asset_balance(asset=i[:-4])
                         sell_qty = float(balance["free"])
                         #sell_qty = Decimal(sell_qty).quantize(Decimal(okr), ROUND_FLOOR)
                         last_time = time.time()
@@ -152,6 +152,7 @@ def top_coin(btc_differ):
                                 break
 
                         time.sleep(5)
+                    sql_req(i)
 
 
 
