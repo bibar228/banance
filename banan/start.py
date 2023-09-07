@@ -33,8 +33,7 @@ trading_pairs = ['BCHUSDT', 'XRPUSDT', 'EOSUSDT', 'LTCUSDT', 'TRXUSDT', 'ETCUSDT
                  'LQTYUSDT', 'USDCUSDT', 'IDUSDT', 'ARBUSDT', 'JOEUSDT', 'TLMUSDT', 'AMBUSDT', 'LEVERUSDT', 'RDNTUSDT', 'HFTUSDT',
                  'XVSUSDT', 'EDUUSDT', 'IDEXUSDT', 'SUIUSDT', 'UMAUSDT', 'RADUSDT', 'KEYUSDT', 'COMBOUSDT', 'NMRUSDT', 'MAVUSDT',
                  'MDTUSDT', 'XVGUSDT', 'OAXUSDT', 'BIFIUSDT', 'MULTIUSDT', 'PROSUSDT', 'VGXUSDT', 'COSUSDT', 'DEGOUSDT', 'FORTHUSDT',
-                 'FLUXUSDT']
-
+                 'FLUXUSDT', "QUICKUSDT", "REIUSDT"]
 ex = []
 
 def top_coin(btc_differ):
