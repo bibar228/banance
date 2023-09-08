@@ -118,8 +118,8 @@ def top_coin():
                         balance = client.get_asset_balance(asset=i[:-4])
                         sell_qty = float(balance["free"])
                         #sell_qty = Decimal(sell_qty).quantize(Decimal(okr), ROUND_FLOOR)
-                        last_time = time.time()
-                        if sell_qty > 0.05 and len(all_orders[all_orders.isin(["NEW"]).any(axis=1)]) == 0 and int(last_time-start_time) < 6300:
+
+                        if sell_qty > 0.05 and len(all_orders[all_orders.isin(["NEW"]).any(axis=1)]) == 0:
                             try:
                                 order_sell = client.order_limit_sell(symbol=i, quantity=sell_qty, price=round((buyprice / 100) * 101, len(str(prices_token[-1]).split(".")[1])))
                             except Exception as e:
@@ -129,7 +129,7 @@ def top_coin():
                                                                                        f"Монеты в кошельке - {float(sell_qty)}, Количество открытых ордеров - {len(all_orders[all_orders.isin(['NEW']).any(axis=1)])}")
                         sell_qty = float(balance["free"])
                         #sell_qty = Decimal(sell_qty).quantize(Decimal(okr), ROUND_FLOOR)
-                        if float(sell_qty) < 0.05 and len(all_orders[all_orders.isin(["NEW"]).any(axis=1)]) == 0 and int(last_time-start_time) < 6300:
+                        if float(sell_qty) < 0.05 and len(all_orders[all_orders.isin(["NEW"]).any(axis=1)]) == 0:
                             open_position = False
 
                             chat_id = -695765690
