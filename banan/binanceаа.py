@@ -121,27 +121,12 @@ trading_pairs_fut = ['LEVERUSDT', 'USDCUSDT', 'AVAXUSDT', 'ATAUSDT', 'ACHUSDT', 
 
 
 
-i = "ORNUSDT"
+i = "BNXUSDT"
 data_token_price = last_data(i, "1m", "1440")
-# d = data_token_price[1][900:]
-#prices_token = data_token_price[0]
-# volumes_token = [round(d[i] + d[i + 1] + d[i + 2], 2) for i in range(0, len(d), 3)]
-prices_token = data_token_price[0][300:]
-price_change_in_5min = 100 - (prices_token[-5] / prices_token[-1]) * 100
-print(prices_token[-5:])
-print(price_change_in_5min)
-# price_change_percent_10h = 100 - ((data_token_price[0][600] / data_token_price[0][-22]) * 100)
-# price_change_in_24min = 100 - (prices_token[0] / prices_token[-1]) * 100
-# print(price_change_in_24min)
-#tickers = client.get_ticker()
-
-# for i in tickers:
-#     if i["symbol"] in trading_pairs_fut:
-#         try:
-#             data_token_price = last_data(i["symbol"], "1m", "1440")
-#             prices_token = data_token_price[0]
-#             price_change_in_24min = 100 - (prices_token[0] / prices_token[-1]) * 100
-#             print(f"{i['symbol']} ----- {i['priceChangePercent']} ---- {price_change_in_24min}")
-#         except:
-#             pass
-# price_change_percent_10h = 100 - ((data_token_price[0][600] / data_token_price[0][-22]) * 100)
+# print(data_token_price[0][-5:])
+# prices_token = max([len(str(i).split(".")[1]) for i in data_token_price[0][-5:]])
+# print(prices_token)
+# s = 0.2300
+# print(s)
+x = Decimal(str(round((0.22 / 100) * 101, max([len(str(i).split(".")[1]) for i in data_token_price[0][-5:]]))))
+print(x)

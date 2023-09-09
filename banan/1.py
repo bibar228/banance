@@ -93,7 +93,7 @@ def top_coin():
 
                         if sell_qty > 0.05 and len(all_orders[all_orders.isin(["NEW"]).any(axis=1)]) == 0 and int(last_time-start_time) < 2500:
                             try:
-                                order_sell = client.order_limit_sell(symbol=i, quantity=sell_qty, price=Decimal(str(round((buyprice / 100) * 101, len(str(Decimal(str(prices_token[-1]))).split(".")[1])))))
+                                order_sell = client.order_limit_sell(symbol=i, quantity=sell_qty, price=Decimal(str(round((buyprice / 100) * 101, max([len(str(i).split(".")[1]) for i in data_token_price[0][-5:]])))))
 
                             except Exception as e:
                                 time.sleep(30)
