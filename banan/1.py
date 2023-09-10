@@ -52,7 +52,8 @@ def top_coin():
 
                     buy_qty = round(11 / prices_token[-1], 1)
                     telebot.TeleBot(telega_token).send_message(chat_id, f"RABOTAEM - {i}\n"
-                                                                        f"Количество покупаемого - {buy_qty}, Цена - {prices_token[-1]}, Изменение цены за 5 мин - {round(price_change_in_5min, 2)}%\n")
+                                                                        f"Количество покупаемого - {buy_qty}, Цена - {prices_token[-1]}, Изменение цены за 5 мин - {round(price_change_in_5min, 2)}%\n"
+                                                                        f"Изменение цены за 10ч - {price_change_percent_10h}")
 
                     try:
                         order_buy = client.create_order(symbol=i, side='BUY', type='MARKET', quantity=buy_qty)

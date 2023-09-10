@@ -121,12 +121,10 @@ trading_pairs_fut = ['LEVERUSDT', 'USDCUSDT', 'AVAXUSDT', 'ATAUSDT', 'ACHUSDT', 
 
 
 
-i = "BNXUSDT"
-data_token_price = last_data(i, "1m", "1440")
+d = "TRBUSDT"
+print(len(trading_pairs))
 # print(data_token_price[0][-5:])
 # prices_token = max([len(str(i).split(".")[1]) for i in data_token_price[0][-5:]])
 # print(prices_token)
 # s = 0.2300
 # print(s)
-x = Decimal(str(round((0.22 / 100) * 101, max([len(str(i).split(".")[1]) for i in data_token_price[0][-5:]]))))
-print(x)
