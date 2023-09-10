@@ -84,6 +84,9 @@ def top_coin():
 
                     buy_qty = round(11 / prices_token[-1], 1)
 
+                    telebot.TeleBot(telega_token).send_message(chat_id, f"RABOTAEM - {i}\n"
+                                                                        f"Количество покупаемого - {buy_qty}, Цена - {prices_token[-1]}, Изменение цены за 5 мин - {round(price_change_in_5min, 2)}%\n")
+
                     try:
                         order_buy = client.create_order(symbol=i, side='BUY', type='MARKET', quantity=buy_qty)
                         ex.append(i)
@@ -97,9 +100,6 @@ def top_coin():
                                                                                f"Количество покупаемого - {buy_qty}, Цена - {prices_token[-1]}")
                             time.sleep(30)
                             break
-
-                    telebot.TeleBot(telega_token).send_message(chat_id, f"RABOTAEM - {i}\n"
-                                                                            f"Количество покупаемого - {buy_qty}, Цена - {prices_token[-1]}, Изменение цены за 5 мин - {round(price_change_in_5min, 2)}%\n")
 
                     try:
                         buyprice = float(order_buy["fills"][0]["price"])
@@ -153,6 +153,7 @@ def top_coin():
                                 client.cancel_order(symbol=i, orderId=ordId)
 
                             try:
+                                sell_qty = float(balance["free"])
                                 order_sell = client.create_order(symbol=i, side='SELL', type='MARKET', quantity=sell_qty)
                                 telebot.TeleBot(telega_token).send_message(-695765690,
                                                                            f"Продажа в минус, за {order_sell['price']}\n"
