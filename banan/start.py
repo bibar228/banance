@@ -85,16 +85,10 @@ def top_coin():
 
                     try:
                         order_buy = client.create_order(symbol=i, side='BUY', type='MARKET', quantity=buy_qty)
-                        ex.append(i)
                     except BinanceAPIException as e:
-                        if e.message == "Filter failure: LOT_SIZE":
-                            buy_qty = int(round(11 / prices_token[-1], 1))
-                            order_buy = client.create_order(symbol=i, side='BUY', type='MARKET', quantity=buy_qty)
-                            ex.append(i)
-                        else:
-                            telebot.TeleBot(telega_token).send_message(-695765690, f"BUY ERROR: {e.message}\n"
+                        telebot.TeleBot(telega_token).send_message(-695765690, f"BUY ERROR: {e.message}\n"
                                                                                f"Количество покупаемого - {buy_qty}, Цена - {prices_token[-1]}")
-                            break
+                        break
 
                     telebot.TeleBot(telega_token).send_message(-695765690, f"RABOTAEM - {i}\n"
                                                                            f"Количество покупаемого - {buy_qty}, Цена - {prices_token[-1]}, Изменение цены за 5 мин - {round(price_change_in_5min, 2)}%")
@@ -117,7 +111,7 @@ def top_coin():
                                                   columns=["orderId", "type", "side", "price", "status"])
                         balance = client.get_asset_balance(asset=i[:-4])
                         sell_qty = float(balance["free"])
-                        #sell_qty = Decimal(sell_qty).quantize(Decimal(okr), ROUND_FLOOR)
+
 
                         if sell_qty > 0.05 and len(all_orders[all_orders.isin(["NEW"]).any(axis=1)]) == 0:
                             try:
@@ -128,7 +122,7 @@ def top_coin():
                                                                                        f"Количество продаваемого - {sell_qty}, Цена - {round((buyprice / 100) * 101, len(str(prices_token[-1]).split('.')[1]))}\n"
                                                                                        f"Монеты в кошельке - {float(sell_qty)}, Количество открытых ордеров - {len(all_orders[all_orders.isin(['NEW']).any(axis=1)])}")
                         sell_qty = float(balance["free"])
-                        #sell_qty = Decimal(sell_qty).quantize(Decimal(okr), ROUND_FLOOR)
+
                         if float(sell_qty) < 0.05 and len(all_orders[all_orders.isin(["NEW"]).any(axis=1)]) == 0:
                             open_position = False
 
